@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char text[100], key[100];
+    int i, len, shift;
+
+    printf("Enter plain text: ");
+    gets(text);
+    printf("Enter key: ");
+    gets(key);
+
+    len = strlen(text);
+    for (i = 0; i < len; i++) {
+        if (text[i] >= 'A' && text[i] <= 'Z')
+            text[i] = ((text[i] - 'A') + (key[i % strlen(key)] - 'A')) % 26 + 'A';
+        else if (text[i] >= 'a' && text[i] <= 'z')
+            text[i] = ((text[i] - 'a') + (key[i % strlen(key)] - 'a')) % 26 + 'a';
+    }
+
+    printf("Encrypted text: %s", text);
+    return 0;
+}
