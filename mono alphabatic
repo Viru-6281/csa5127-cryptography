@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void encryptMono(char *plaintext, char *ciphertext, char *key) {
+    for (int i = 0; plaintext[i] != '\0'; i++) {
+        char ch = toupper(plaintext[i]);
+        if (ch >= 'A' && ch <= 'Z') {
+            ciphertext[i] = key[ch - 'A'];
+        } else {
+            ciphertext[i] = ch;
+        }
+    }
+    ciphertext[strlen(plaintext)] = '\0';
+}
+
+void decryptMono(char *ciphertext, char *decrypted, char *key) {
+    for (int i = 0; ciphertext[i] != '\0'; i++) {
+        char ch = toupper(ciphertext[i]);
+        if (ch >= 'A' && ch <= 'Z') {
+            for (int j = 0; j < 26; j++) {
+                if (key[j] == ch) {
+                    decrypted[i] = 'A' + j;
+                    break;
+                }
+            }
+        } else {
+            decrypted[i] = ch;
+        }
+    }
+    decrypted[strlen(ciphertext)] = '\0';
+}
+
+int main() {
+    char key[] = "QWERTYUIOPASDFGHJKLZXCVBNM"; 
+    char plaintext[100], ciphertext[100], decrypted[100];
+
+    printf("Enter plaintext: ");
+    gets(plaintext);
+
+    encryptMono(plaintext, ciphertext, key);
+    printf("Encrypted text: %s\n", ciphertext);
+
+    decryptMono(ciphertext, decrypted, key);
+    printf("Decrypted text: %s\n", decrypted);
+
+    return 0;
+}
