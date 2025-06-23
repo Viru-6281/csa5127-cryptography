@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+#define MOD 26
+
+int modInverse(int a) {
+    for (int i = 1; i < MOD; i++)
+        if ((a * i) % MOD == 1) return i;
+    return -1;
+}
+
+int main() {
+    int key[2][2], inv[2][2], det, invDet;
+    char pt[3], ct[3], dt[3];
+
+    printf("Enter 2x2 key matrix:\n");
+    scanf("%d%d%d%d", &key[0][0], &key[0][1], &key[1][0], &key[1][1]);
+
+    printf("Enter 2-letter plaintext: ");
+    scanf("%s", pt);
+    
+    ct[0] = ((key[0][0]*(pt[0]-'A') + key[0][1]*(pt[1]-'A')) % MOD) + 'A';
+    ct[1] = ((key[1][0]*(pt[0]-'A') + key[1][1]*(pt[1]-'A')) % MOD) + 'A';
+    ct[2] = '\0';
+    printf("Encrypted: %s\n", ct);
+
+    det = (key[0][0]*key[1][1] - key[0][1]*key[1][0]) % MOD;
+    if (det < 0) det += MOD;
+    invDet = modInverse(det);
+
+    inv[0][0] = ( key[1][1] * invDet) % MOD;
+    inv[0][1] = (-key[0][1] * invDet + MOD) % MOD;
+    inv[1][0] = (-key[1][0] * invDet + MOD) % MOD;
+    inv[1][1] = ( key[0][0] * invDet) % MOD;
+
+    dt[0] = ((inv[0][0]*(ct[0]-'A') + inv[0][1]*(ct[1]-'A')) % MOD) + 'A';
+    dt[1] = ((inv[1][0]*(ct[0]-'A') + inv[1][1]*(ct[1]-'A')) % MOD) + 'A';
+    dt[2] = '\0';
+    printf("Decrypted: %s\n", dt);
+
+    return 0;
+}
